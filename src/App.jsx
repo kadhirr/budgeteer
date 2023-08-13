@@ -9,6 +9,7 @@ import { Error } from "./layouts/Error";
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ExpensesPage,{expensesLoader} from "./pages/ExpensesPage";
 
 function App() {
 
@@ -28,6 +29,11 @@ function App() {
         {
           path: 'logout',
           action: logoutAction
+        },
+        {
+          path: 'expenses',
+          element: <ExpensesPage />,
+          loader: expensesLoader
         }
       ]
     },

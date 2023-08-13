@@ -1,16 +1,18 @@
-import React from 'react'
-import { useLoaderData } from 'react-router-dom';
-import { createBudget, createExpense, fetchData } from '../helper'
-import Intro from '../components/Intro';
+import React from 'react';
+import { Link, useLoaderData } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import AddBudgetForm from '../components/AddBudgetForm';
 import AddExpenseForm from '../components/AddExpenseForm';
 import BudgetItem from '../components/BudgetItem';
+import Intro from '../components/Intro';
+import { createBudget, createExpense, fetchData } from '../helper';
+import Table from '../components/Table';
 
 export function dashboardLoader() {
     const username = fetchData('username');
     const budgets = fetchData("budgets");
-    return { username, budgets }
+    const expenses = fetchData("expenses");
+    return { username, budgets, expenses }
 }
 
 export async function dashboardAction({ request }) {
@@ -46,7 +48,7 @@ export async function dashboardAction({ request }) {
 }
 
 const Dashboard = () => {
-    const { username, budgets } = useLoaderData();
+    const { username, budgets, expenses } = useLoaderData();
     return (
         <div>
             {username ? (
@@ -67,7 +69,19 @@ const Dashboard = () => {
                                         ))
                                     }
                                 </div>
+                                {
+                                    expenses && expenses.length > 0 && (
+                                        <div className="grid-md">
+                                            <h2>Recent Expenses</h2>
+                                            <Table expenses={expenses.sort((a,b) => b.createdAt - a.createdAt).slice(0,8)} />
+                                            {expenses.length > 8 && (
+                                                <Link to="expenses" className='btn btn--dark'>View All Expenses</Link>
+                                            )}
+                                        </div>
+                                    )
+                                }
                             </div>
+                            
                         ) : (
                             <div className="grid-sm">
                                 <p>Personal budgeting is the secret to financial freedom.</p>
