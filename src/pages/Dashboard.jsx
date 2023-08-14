@@ -5,7 +5,7 @@ import AddBudgetForm from '../components/AddBudgetForm';
 import AddExpenseForm from '../components/AddExpenseForm';
 import BudgetItem from '../components/BudgetItem';
 import Intro from '../components/Intro';
-import { createBudget, createExpense, fetchData } from '../helper';
+import { createBudget, createExpense, deleteItem, fetchData } from '../helper';
 import Table from '../components/Table';
 
 export function dashboardLoader() {
@@ -44,6 +44,16 @@ export async function dashboardAction({ request }) {
             throw new Error("There was an error creating your expense")
         }
     }
+    if (_action === "deleteExpense") {
+        try {
+            deleteItem({ key: "expenses", id: values.expenseId })
+            return toast.success("Expense Deleted Successfully!")
+        } catch (e) {
+            throw new Error("There was an error creating your expense")
+        }
+    }
+
+    
 
 }
 

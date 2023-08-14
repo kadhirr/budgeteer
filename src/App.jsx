@@ -6,10 +6,12 @@ import Dashboard, { dashboardAction, dashboardLoader } from "./pages/Dashboard";
 import Main, { mainLoader } from "./layouts/Main";
 import { logoutAction } from "./actions/logout";
 import { Error } from "./layouts/Error";
+import { deleteBudget } from "./actions/deleteBudget";
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ExpensesPage,{expensesLoader} from "./pages/ExpensesPage";
+import ExpensesPage, { expensesAction, expensesLoader } from "./pages/ExpensesPage";
+import BudgetPage, { budgetAction, budgetLoader } from "./pages/BudgetPage";
 
 function App() {
 
@@ -33,8 +35,23 @@ function App() {
         {
           path: 'expenses',
           element: <ExpensesPage />,
-          loader: expensesLoader
-        }
+          loader: expensesLoader,
+          action: expensesAction,
+          errorElement: <Error />,
+        },
+        {
+          path: 'budget/:id',
+          element: <BudgetPage />,
+          loader: budgetLoader,
+          action: budgetAction,
+          errorElement: <Error />,
+          children: [
+            {
+              path: "delete",
+              action: deleteBudget
+            }
+          ]
+        },
       ]
     },
   ]);
